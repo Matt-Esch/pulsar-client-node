@@ -21,9 +21,14 @@
   'conditions': [
     ['OS=="win"', {
       'variables': {
-       'pulsar_cpp_dir%': '<!(echo %PULSAR_CPP_DIR%)',
-       'os_arch%': '<!(echo %OS_ARCH%)',
-      },
+        'pulsar_cpp_dir%': '<!(echo %PULSAR_CPP_DIR%)',
+        'os_arch%': '<!(echo %OS_ARCH%)',
+      }
+    }],
+    ['OS=="mac"', {
+      'variables': {
+        'pulsar_cpp_dir': '<!(echo $PULSAR_CPP_DIR)'
+      }
     }]
   ],
   "targets": [
@@ -35,7 +40,7 @@
       "include_dirs": [
         "<!@(node -p \"require('node-addon-api').include\")",
       ],
-      "defines": ["NAPI_VERSION=4", "NAPI_DISABLE_CPP_EXCEPTIONS=1"],
+      "defines": ["NAPI_VERSION=4"],
       "sources": [
         "src/addon.cc",
         "src/Message.cc",
@@ -48,9 +53,30 @@
         "src/ConsumerConfig.cc",
         "src/Reader.cc",
         "src/ReaderConfig.cc",
+        "src/ThreadSafeDeferred.cc"
       ],
       'conditions': [
+        ['OS=="mac"', {
+          'xcode_settings': {
+            'GCC_ENABLE_CPP_EXCEPTIONS': 'YES',
+            'CLANG_CXX_LIBRARY': 'libc++'
+          },
+          "include_dirs": [
+            "<(pulsar_cpp_dir)/include",
+          ],
+          "libraries": [
+            "<(pulsar_cpp_dir)/lib/libpulsar.dylib"
+          ],
+        }],
         ['OS=="win"', {
+          "defines": [
+            "_HAS_EXCEPTIONS=1"
+          ],
+          "msvs_settings": {
+            "VCCLCompilerTool": {
+              "ExceptionHandling": 1
+            },
+          },
           "include_dirs": [
             "<(pulsar_cpp_dir)\include",
           ],

@@ -46,7 +46,7 @@ Compatibility between each version of the Node.js client and the C++ client is a
 | 1.1.x          | 2.4.0 or later |
 | 1.2.x          | 2.5.0 or later |
 | 1.3.x          | 2.7.0 or later |
-| 1.4.x - 1.5.x  | 2.8.0 or later |
+| 1.4.x - 1.6.x  | 2.8.0 or later |
 
 If an incompatible version of the C++ client is installed, you may fail to build or run this library.
 
@@ -66,6 +66,7 @@ cmake \
 cmake --config Release
 ```
 
+
 2. Set the variable `PULSAR_CPP_DIR` with the `pulsar-client-cpp` path in a Windows command tool.
 
 ```shell
@@ -77,6 +78,28 @@ set PULSAR_CPP_DIR=C:\pulsar\pulsar-client-cpp
 
 ```shell
 set OS_ARCH=x64-windows
+```
+
+### Install on mac
+
+1. Install the Pulsar C++ client on mac.
+
+```shell
+brew install libpulsar
+```
+
+2. Get the installation path of libpulsar
+
+```shell
+brew info libpulsar
+```
+
+
+2. Set the variable `PULSAR_CPP_DIR` with the `pulsar-client-cpp` path in a mac command tool.
+
+```shell
+# for example
+export PULSAR_CPP_DIR=/usr/local/Cellar/libpulsar/2.9.1_1
 ```
 
 
